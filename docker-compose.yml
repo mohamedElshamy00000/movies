@@ -1,0 +1,54 @@
+version: '3.9'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: best-movies-app
+    container_name: best-movies-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - best-movies-network
+    ports:
+      - "9001:9001"
+    depends_on:
+      - db
+
+  webserver:
+    image: nginx:alpine
+    container_name: best-movies-webserver
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - best-movies-network
+    depends_on:
+      - app
+
+  db:
+    image: mysql:5.7
+    container_name: best-movies-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: best_movies
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: root  # إضافة كلمة مرور للمستخدم root
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - best-movies-network
+
+networks:
+  best-movies-network:
+    driver: bridge
+
+volumes:
+  dbdata:
