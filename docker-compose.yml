@@ -40,12 +40,22 @@ services:
       MYSQL_DATABASE: best_movies
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       MYSQL_USER: root
-      MYSQL_ROOT_PASSWORD: root  # إضافة كلمة مرور للمستخدم root
+      MYSQL_ROOT_PASSWORD: root 
     volumes:
       - dbdata:/var/lib/mysql
     networks:
       - best-movies-network
-
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: best-movies-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8081:80"
+    networks:
+      - best-movies-network
 networks:
   best-movies-network:
     driver: bridge
