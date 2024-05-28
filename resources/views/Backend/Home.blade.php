@@ -8,12 +8,14 @@
             {{-- incloud error messages component --}}
             @include('Backend.flash.messages')
 
+            <div class="btn-toolbar justify-content-between align-items-center my-3">
+                <h4><i class="fa-solid fa-film me-2"></i>Movies</h4>
+            </div>
+
             <div class="card">
                 <div class="card-header">
 
                     <div class="btn-toolbar justify-content-between align-items-center">
-                        <h4 class="mb-0"><i class="fa-solid fa-film me-2"></i>Movies</h4>
-
                         {{-- import form --}}
                         <form action="{{ route('dashboard.excel.import') }}" method="post" enctype="multipart/form-data">
                             @csrf
@@ -22,11 +24,14 @@
                                 <input type="file" name="movies" class="form-control" aria-describedby="btnGroupAddon">
                             </div>
                         </form>
+
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#AddModal">Add New</button>
+
                     </div>
                 </div>
 
                 <div class="card-body">
-                    <table class="table yajra-datatable" id="movies">
+                    <table class="table yajra-datatable" id="moviesTable">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -48,14 +53,65 @@
         </div>
     </div>
 </div>
+
+{{-- alert --}}
+@include('Components.dark-alert')
+
+{{-- modals --}}
+@include('Components.movie-edit-modal')
+@include('Components.movie-add-modal')
+
 @endsection
 
-
 @section('script')
+
 <script>
+    function showAlert(message) {
+        var alertWindow = document.querySelector('#alertWindow');
+        var messageElement = alertWindow.querySelector('.alert-message'); // Assuming a .alert-message element for content
+    
+        if (messageElement) {
+        messageElement.textContent = message; // Update the message content
+
+        $('#alertWindow').fadeIn();
+        setTimeout(function() {
+            $('#alertWindow').fadeOut();
+        }, 4000);
+
+        } else {
+        console.error("Alert message element not found!");
+        }
+    }
+
+    // Send DELETE request to remove the movie
+    function deleteMovie(movieId) {
+        var button = event.srcElement;
+        console.log(button);
+        // disabled button and add a loading class
+        $(button).addClass('loading').prop('disabled', true);
+
+        var deleteUrl = "{{route('dashboard.movie.destroy', '')}}"+"/"+movieId;
+        $.ajax({
+            url: deleteUrl,
+            method: "GET",
+            success: function(data) {
+                $(button).removeClass('loading').prop('disabled', false);
+                showAlert('Deleted Succesfuly!');
+                // Remove the movie row from the DataTables table
+                var table = $('#moviesTable').DataTable();
+                    table.row('#' + movieId).remove().draw();
+            },
+            error: function(error) {
+                $(button).removeClass('loading');
+                showAlert('Error!');
+            }
+        });
+    }
+    
     $(document).ready( function () {
 
-        var table = $('#movies').DataTable({
+        // Fetch movie details using AJAX
+        var table = $('#moviesTable').DataTable({
             processing: true,
             serverSide: true,
             responsive: true,
@@ -78,8 +134,11 @@
                     searchable: true,
                 },
             ],
-            dom: 'Bfrtip'
+            dom: 'Bfrtip',
+            buttons:[],
+            
         });
+
     });
 
 </script>
