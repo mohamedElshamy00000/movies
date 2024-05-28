@@ -2,4 +2,56 @@
 div.dataTables_wrapper div.dataTables_filter {
     display: inline !important;
     float: right !important; 
+    margin-bottom: 1em;
+}
+
+.btn.loading {
+    background-color: #ccc;
+    cursor: wait;
+}
+  
+.btn.loading::after {
+    content: "";
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+      border-top-color: rgb(221, 221, 221);
+    border-top-color: #aaa;
+    animation: spin 1s linear infinite;
+    position: relative;
+    top: 3px;
+    left: 4px;
+}
+  
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.dark-alert {
+    
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    position: absolute !important;
+    top: 50px !important;
+    background: #3b3b3b !important;
+    color: #FFF !important;
+    padding: 1rem;
+    border-radius: 4px;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+  
+.dark-alert.show {
+    opacity: 1;
+}
+
+.btn-close{
+
 }
