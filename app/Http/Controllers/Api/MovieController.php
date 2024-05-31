@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class MovieController extends Controller
 {
     
+    // index all of search with 'genre'
     function index(Request $request) {
         $queryMovies = movie::query();
         try {
@@ -22,12 +23,13 @@ class MovieController extends Controller
                 });
             }
 
-            // cash
+            // Do caching
             $cacheKey = 'movies_' . md5(serialize($request->query()));
             $movies = cache()->remember($cacheKey, 120, function() use ($queryMovies){
                 return $queryMovies->paginate(10);
             });
 
+            // return data as json
             return response()->json($movies);
 
         } catch (\Exception $e) {
@@ -38,12 +40,16 @@ class MovieController extends Controller
         }
         
     }
-    
+
+    // show 1 of movies by id
     public function show($id)
     {
         try {
+            // get movie data
             $movie = movie::with('genres')->findOrFail($id);
-            return $movie;
+            // return data as json
+            return response()->json($movie);
+            
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'message' => 'Movie not found',
