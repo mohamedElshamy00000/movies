@@ -30,7 +30,7 @@
                         <input type="text" class="form-control" name="length" id="movie-length">
                     </div>
                     <div class="mb-3">
-                        <label for="movie-genre" class="col-form-label">genre:</label>
+                        <label for="movie-genre" class="col-form-label">genre: Use  (,) to separate items </label>
                         <input type="text" class="form-control" name="genre" id="movie-genre">
                     </div>
                     <div class="mb-3">
