@@ -18,11 +18,14 @@ Markdown
     * Update the `.env` file with your database credentials.
     * Run the database migrations:
         ```bash
-        php artisan migrate
+        php artisan migrate:refresh --seed
         
 5. **Access:**
     ```bash
-    http://localhost:8080/
+    http://localhost:8080/login
+
+    user : admin@gmail.com
+    pass : password
 
 ## Features
 
@@ -56,3 +59,5 @@ Markdown
     php artisan migrate --force
     sudo chown -R webapp:webapp storage
     sudo chmod -R 775 storage
+
+
