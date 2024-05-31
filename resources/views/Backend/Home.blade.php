@@ -54,9 +54,6 @@
     </div>
 </div>
 
-{{-- alert --}}
-@include('Components.dark-alert')
-
 {{-- modals --}}
 @include('Components.movie-edit-modal')
 @include('Components.movie-add-modal')

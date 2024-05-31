@@ -2,7 +2,24 @@
 
 var EditModalLabel = document.getElementById('EditModal')
 
-// EditModalLabel.addEventListener('show', function (event) {
+function modalFields(data) {
+    const movieFields = ['title', 'director', 'year', 'country', 'length', 'genre', 'colour','id'];
+    for (const field of movieFields) {
+        if (field === 'genre') {
+            // Handle genres 
+
+            if (Array.isArray(data.genres)) {
+              const genreNames = data.genres.map(genre => genre.genre).join(', ');
+              EditModalLabel.querySelector(`#movie-${field}`).value = genreNames;
+            } else if (typeof data.genres === 'string') {
+                EditModalLabel.querySelector(`#movie-${field}`).value = data.genres;
+            }
+        } else {
+            EditModalLabel.querySelector(`#movie-${field}`).value = data.movie[field];
+        }
+    }
+}
+
 $(document).on('shown.bs.modal', EditModalLabel,function (event) {
 
     // Button that triggered the modal
@@ -26,15 +43,7 @@ $(document).on('shown.bs.modal', EditModalLabel,function (event) {
         success: function(data) {
 
             // Update the modal's content.
-
-            var MovieTitle    = EditModalLabel.querySelector('#movie-title').value = data.movie.title
-            var MovieDirector = EditModalLabel.querySelector('#movie-director').value = data.movie.director
-            var MovieYear     = EditModalLabel.querySelector('#movie-year').value = data.movie.year
-            var MovieCountry  = EditModalLabel.querySelector('#movie-country').value = data.movie.country
-            var MovieLength   = EditModalLabel.querySelector('#movie-length').value = data.movie.length
-            var MovieGenre    = EditModalLabel.querySelector('#movie-genre').value = data.movie.genre
-            var MovieColour   = EditModalLabel.querySelector('#movie-colour').value = data.movie.colour
-            var Movieid       = EditModalLabel.querySelector('#movie-id').value = movieId
+            modalFields(data);
 
             // Re-enable input fields after successful data import
             EditModalLabel.querySelectorAll('input').forEach(function(input) {

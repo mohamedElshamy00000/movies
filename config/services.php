@@ -14,6 +14,9 @@ return [
     |
     */
 
+    'imdb' => [
+        'api_key' => env('IMDB_API_KEY'),
+    ],
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
