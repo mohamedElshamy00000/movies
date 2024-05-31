@@ -43,13 +43,13 @@ Markdown
     * Create new movies, retrieve movie information, update movie details, and manage movie relationships with other models (`User`, `UserMovie`, `MovieGenra`).
 
     ** User **
-    * Use the `User` model to interact with user data in your application.
+    * Use the `User` model to interact with user data
     * Create new users, and manage user relationships with other models (`UserMovie`).
 
     ** UserMovie **
-    * This document describes the `UserMovie` model in the Laravel project.
+    * This document describes the `UserMovie` model
 
-* **Deployment Instructions:** If your project has a specific deployment process, document it in a separate markdown file.
+* **Deployment Instructions:** 
 ```bash
     eb init
     eb create
