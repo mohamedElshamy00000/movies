@@ -10,7 +10,7 @@ class MovieTest extends TestCase
 {
 
     /**
-     * feature test get movies.
+     * feature test get movies
     */
     function test_can_get_movies() {
 
@@ -20,7 +20,18 @@ class MovieTest extends TestCase
         $response = $this->get('/api/movies');
         $response->assertStatus(200);
     }
-    
+    /**
+     * feature test get movies where genre
+    */
+    function test_can_get_movies_where_genre() {
+
+        // disable middleware
+        $this->withoutMiddleware();
+        // call api
+        $response = $this->get('/api/movies', ['genre' => 'Drama']);
+        $response->assertStatus(200);
+    }
+
     /**
      * feature test show movie details
     */
